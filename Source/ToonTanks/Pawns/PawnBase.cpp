@@ -3,6 +3,7 @@
 
 #include "PawnBase.h"
 #include "Components/CapsuleComponent.h"
+#include "ToonTanks/Actors/ProjectileBase.h"
 	 
 // Sets default values
 APawnBase::APawnBase()
@@ -45,15 +46,22 @@ void APawnBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void APawnBase::RotateTurretFunction(FVector LockAtTarget) {
+void APawnBase::RotateTurret(FVector LockAtTarget) {
 	FVector LookAtTargetClean = FVector(LockAtTarget.X, LockAtTarget.Y, TurretMesh->GetComponentLocation().Z);
 	FVector StartLocation = TurretMesh->GetComponentLocation();
-	FRotator TurretRotation = FVector(FVector(LookAtTargetClean - StartLocation)).Rotation();
+	FRotator TurretRotation = FVector(LookAtTargetClean - StartLocation).Rotation();
 	TurretMesh->SetWorldRotation(TurretRotation);
 }
 
 void APawnBase::Fire() {
+	
+	if (ProjectileClass) {
+		FVector SpawnLocation = ProjectileSpawnPoint->GetComponentLocation();
+		FRotator SpawnRotation = ProjectileSpawnPoint->GetComponentRotation();
 
+		AProjectileBase* TempProjectile = GetWorld()->SpawnActor<AProjectileBase>(ProjectileClass, SpawnLocation, SpawnRotation);
+		TempProjectile->SetOwner(this);
+	}
 }
 
 void APawnBase::HandleDestruction() {

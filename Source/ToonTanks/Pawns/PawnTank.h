@@ -28,6 +28,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movment", meta=(AllowPrivateAccess = "true"))
 		float RotateSpeed = 100.0f;
 	
+	APlayerController* PlayerControllerRef;
 	FVector MoveDirection;
 	FQuat RotationDirection;
 	
@@ -45,8 +46,12 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void HandleDestruction() override;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	
+
 };
