@@ -9,7 +9,7 @@
 void APawnTurret::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
-	if (!PlayerPawn || ReturnDistanceToPlayer() > FireRange) {
+	if (!PlayerPawn) {
 		return;
 	}
 	RotateTurret(PlayerPawn->GetActorLocation());
@@ -24,7 +24,7 @@ void APawnTurret::BeginPlay() {
 
 void APawnTurret::CheckedFireCondition() {
 	//if Player == null || is Dead Then Bail  
-	if (!PlayerPawn) {
+	if (!PlayerPawn || !PlayerPawn->GetIsPlayerAlive()) {
 		return;
 	}
 	
@@ -46,3 +46,4 @@ void APawnTurret::HandleDestruction() {
 	Super::HandleDestruction();
 	Destroy();
 }
+
